@@ -86,6 +86,20 @@ If parts of the setting are missing, then the currently active zone setting is u
 If the termination condition is missing, the binding first checks if an override is active. If that's the case, the existing termination condition is used. An existing timer, for example, just keeps running. 
 In case the zone is currently in smart-schedule mode and thus doesn't have a termination condition, then the default termination condition is used, as configured in the tado° app (settings -> select zone -> manual control on tado° device).
 
+
+### Change temperature in rules
+
+```
+rule WindowOpen
+when
+ Item Window_Shutter changed from CLOSED to OPEN
+then
+ var Number openTemp = new QuantityType(12.0 + "°C")
+ HEAT_target_temperature.sendCommand(openTemp)
+ HEAT_target_operation_mode.sendCommand("MANUAL")
+end
+```
+
 ## `mobiledevice` Thing
 
 The `mobiledevice` thing represents a smart phone that is configured for tado°. It provides access to the geotracking functionality.
