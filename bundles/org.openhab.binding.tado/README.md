@@ -219,3 +219,21 @@ ON=at home
 OFF=away
 NULL=lost
 ```
+
+
+## Change the temperature when open / close a shuttercontact within a rule
+
+```
+rule KitchenWindow
+when Item FF_Kitchen_Shutter changed
+ then
+  switch (FF_Kitchen_Shutter.state) {
+ 
+    case OPEN : { 
+                    var Number awayTemp = new QuantityType(12.0 + "°C")
+                    Kitchen_target_temperature.sendCommand(awayTemp)
+                    Kitchen_operation_mode.sendCommand("MANUAL") }
+    case CLOSED :   Kitchen_operation_mode.sendCommand("SCHEDULE")
+  }
+end
+```
